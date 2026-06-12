@@ -67,7 +67,7 @@
                 }
 
                 if (userInput === "JoseADMIN" && passInput === "12345") {
-                    window.location.href = "../Admin/Admin.html";
+                    window.location.href = "Admin/Admin.html";
                     return;
                 }
                 
