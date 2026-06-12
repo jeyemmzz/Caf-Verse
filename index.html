@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CaféVerse — Coffee Sanctuary</title>
+    <link rel="icon" href="../icon/Icooon.png">
+    <link rel="stylesheet" href="../start/style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header id="main-header" style="display:none;">
+            <div class="brand"><h1 onclick="handleBrandClick()">CaféVerse</h1></div>
+            <div id="user-points-wrapper" onclick="showScreen('screen-profile')" style="cursor:pointer; font-size: 0.85rem;">
+                👑 <span id="user-points-top" style="color:var(--accent-warm); font-weight:700;">120 pts</span>
+            </div>
+        </header>
+
+        <div id="screen-landing" class="screen active">
+            <h1 class="hero-title">CaféVerse</h1>
+            <p class="hero-subtitle">A world where every café has its own story.</p>
+            <button class="btn-primary" onclick="showAuth('login')">Enter CaféVerse</button>
+        </div>
+
+        <div id="screen-login" class="screen">
+            <div class="glass-panel auth-box">
+                <h3 style="margin-bottom:18px; font-weight:600;">Account Access Required</h3>
+                <div class="form-group">
+                    <label>Username / Account Name</label>
+                    <input type="text" class="form-control" id="login-user" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" id="login-pass" placeholder="Enter password">
+                </div>
+                <button class="btn-primary" style="margin-top:8px;" onclick="validateAccess('login')">Login</button>
+                <div class="auth-toggle-link" onclick="showAuth('signup')">Don't have an account? <span>Sign Up</span></div>
+            </div>
+        </div>
+
+        <div id="screen-signup" class="screen">
+            <div class="glass-panel auth-box">
+                <h3 style="margin-bottom:18px; font-weight:600;">Create New Account</h3>
+                <div class="form-group">
+                    <label>Your Display Name</label>
+                    <input type="text" class="form-control" id="signup-name" placeholder="e.g. Jose Mari">
+                </div>
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" class="form-control" id="signup-user" placeholder="Create username">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" id="signup-pass" placeholder="••••••••">
+                </div>
+                <button class="btn-primary" style="margin-top:8px;" onclick="validateAccess('signup')">Create Account</button>
+                <div class="auth-toggle-link" onclick="showAuth('login')">Already have an account? <span>Login</span></div>
+            </div>
+        </div>
+
+        <div id="screen-selector" class="screen">
+            <h2 class="section-title">Choose Your Café Branch</h2>
+            <div class="grid-layout">
+                <div class="glass-panel cafe-card" onclick="openCafe('Rainy Café', '☔')"><span class="icon">☔</span><h3>Rainy Café</h3></div>
+                <div class="glass-panel cafe-card" onclick="openCafe('Midnight Café', '🌙')"><span class="icon">🌙</span><h3>Midnight Café</h3></div>
+                <div class="glass-panel cafe-card" onclick="openCafe('Sakura Café', '🌸')"><span class="icon">🌸</span><h3>Sakura Café</h3></div>
+                <div class="glass-panel cafe-card" onclick="openCafe('Beach Café', '🌴')"><span class="icon">🌴</span><h3>Beach Café</h3></div>
+                <div class="glass-panel cafe-card" onclick="openCafe('Study Café', '📚')"><span class="icon">📚</span><h3>Study Café</h3></div>
+                <div class="glass-panel cafe-card" onclick="openCafe('Gamer Café', '🎮')"><span class="icon">🎮</span><h3>Gamer Café</h3></div>
+            </div>
+        </div>
+
+        <div id="screen-cafe" class="screen">
+            <button class="btn-back" onclick="showScreen('screen-selector')">← Back to Cafés</button>
+            <div class="glass-panel cafe-banner">
+                <h2 id="current-cafe-name">Midnight Café</h2>
+                <p id="current-cafe-story" style="font-size:0.8rem; color:var(--text-muted); margin-top:6px; font-style:italic; line-height:1.4;"></p>
+            </div>
+            <div class="menu-filter">
+                <div class="filter-chip active" onclick="filterMenu('all')">All Menu</div>
+                <div class="filter-chip" onclick="filterMenu('drinks')">Drinks</div>
+                <div class="filter-chip" onclick="filterMenu('desserts')">Desserts</div>
+            </div>
+            <div class="menu-list" id="menu-items-container"></div>
+        </div>
+
+        <div id="screen-cart" class="screen">
+            <h2 class="section-title">Your Order List</h2>
+            <div class="glass-panel" style="padding:16px;" id="cart-container"></div>
+            
+            <div class="glass-panel" style="padding:16px; margin-top:12px;" id="checkout-form-container">
+                <div class="form-group">
+                    <label>Customer Identity</label>
+                    <input type="text" class="form-control" id="cart-display-name" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Settlement Gateway</label>
+                    <select class="form-control" id="cart-payment-method" style="cursor: pointer; appearance: none;">
+                        <option value="GCash">E-Wallet (GCash)</option>
+                        <option value="Maya">E-Wallet (Maya)</option>
+                        <option value="Cash">Cash on Counter</option>
+                    </select>
+                </div>
+                <button class="btn-primary" style="margin-top:8px;" onclick="placeOrder()">Confirm Order Processing</button>
+            </div>
+        </div>
+
+        <div id="screen-profile" class="screen">
+            <h2 class="section-title">User Account Portfolio</h2>
+            
+            <div class="glass-panel" style="padding:20px; text-align:center; margin-bottom:14px;">
+                <div style="font-size:2.5rem; margin-bottom:6px;">👤</div>
+                <h3 id="profile-user-title" style="letter-spacing:0.5px;">Guest Barista</h3>
+                <p style="color:var(--text-muted); font-size:0.8rem; margin-top:4px;">Status: <span style="color:var(--accent-warm); font-weight:600;">Beginner Barista ☕</span></p>
+            </div>
+
+            <div class="glass-panel" style="padding:16px; margin-bottom:14px; max-height: 250px; overflow-y: auto;">
+                <h3 style="font-size:0.95rem; margin-bottom:12px; color:var(--accent-warm);">📜 Order & Buy History</h3>
+                <div id="profile-buy-history-box"></div>
+            </div>
+
+            <div class="glass-panel" style="padding:16px; margin-bottom:14px;">
+                <h3 style="font-size:0.95rem; margin-bottom:12px;">🎁 Loyalty & Achievements</h3>
+                <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.2); padding:12px; border-radius:10px;">
+                    <div style="flex:1;">
+                        <div style="font-size:0.85rem; font-weight:600;">Daily Visit Check-In</div>
+                        <div style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;">Claim daily engagement points</div>
+                    </div>
+                    <button class="btn-add" id="claim-btn" onclick="claimPoints()">Claim</button>
+                </div>
+                <div style="margin-top:14px; font-size:0.8rem; color:var(--text-muted); display:flex; justify-content:space-between;">
+                    <span>Total Balance Accumulations:</span><strong style="color:var(--text-primary);" id="user-points-total">120 pts</strong>
+                </div>
+            </div>
+
+            <button class="btn-primary" style="background: linear-gradient(135deg, #5c2323, #3a1515); color: #ffb3b3; border: 1px solid rgba(255,0,0,0.15);" onclick="logoutCustomer()">
+                Logout Account
+            </button>
+        </div>
+    </div>
+
+    <nav class="bottom-nav" id="global-nav">
+        <button class="nav-item active" id="nav-btn-cafes" onclick="showScreen('screen-selector')"><span>🗺️</span>Cafes</button>
+        <button class="nav-item" id="nav-btn-cart" onclick="showScreen('screen-cart')"><span>🛒<span class="badge" id="cart-count">0</span></span>Cart</button>
+        <button class="nav-item" id="nav-btn-profile" onclick="showScreen('screen-profile')"><span>👤</span>Profile</button>
+    </nav>
+
+    <script src="../start/function.js"></script>
+</body>
+</html>
